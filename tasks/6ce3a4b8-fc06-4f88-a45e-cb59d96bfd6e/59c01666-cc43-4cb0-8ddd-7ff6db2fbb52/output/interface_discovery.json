@@ -1,0 +1,21 @@
+{
+  "taskId": "48fa7338-0541-418b-98c3-b7b2571ca125",
+  "windowId": "59c01666-cc43-4cb0-8ddd-7ff6db2fbb52",
+  "sourceFilePath": "tasks/6ce3a4b8-fc06-4f88-a45e-cb59d96bfd6e/59c01666-cc43-4cb0-8ddd-7ff6db2fbb52/input/MiUIS_HIS_Interface_Template.xlsx",
+  "status": "failed",
+  "summary": "Input XLSX file was not found in the current workspace, so miuis_api and other_api sheets could not be analyzed.",
+  "miuisApis": [],
+  "matchedOtherApis": [],
+  "unmatchedMiuisApis": [],
+  "recommendations": [
+    "Ensure the XLSX file exists at the specified workspace path before rerunning interface discovery.",
+    "Verify that the repository branch or task input upload contains tasks/6ce3a4b8-fc06-4f88-a45e-cb59d96bfd6e/59c01666-cc43-4cb0-8ddd-7ff6db2fbb52/input/MiUIS_HIS_Interface_Template.xlsx.",
+    "After restoring the input file, rerun the analyzer to inspect the miuis_api and other_api sheets."
+  ],
+  "errorReasons": [
+    {
+      "code": "SOURCE_FILE_NOT_FOUND",
+      "message": "The required input XLSX file does not exist in the current workspace."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Interface Discovery Debug Log
+
+status: pending
+windowId: da733a03-5b19-4109-aa86-d65f066a8c63
+sourceFilePath: tasks/8ab9126f-741f-41e0-aa23-1f87da8e422f/da733a03-5b19-4109-aa86-d65f066a8c63/input/MiUIS_HIS_Interface_Template.xlsx
+
+Cloud Agent 尚未写入执行日志。

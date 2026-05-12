@@ -1,0 +1,911 @@
+{
+  "taskId": "1c60c984-ee08-408e-8322-0093fd330793",
+  "windowId": "59c01666-cc43-4cb0-8ddd-7ff6db2fbb52",
+  "sourceFilePath": "tasks/6ce3a4b8-fc06-4f88-a45e-cb59d96bfd6e/59c01666-cc43-4cb0-8ddd-7ff6db2fbb52/input/MiUIS_HIS_Interface_Template.xlsx",
+  "summary": {
+    "miuisApiCount": 21,
+    "otherApiCount": 6,
+    "matchedMiuisApiCount": 11,
+    "partialMatchedMiuisApiCount": 4,
+    "unmatchedMiuisApiCount": 10,
+    "matchedOtherApiCount": 5,
+    "allMiuisApisCovered": false,
+    "conclusion": "other_api 中未发现能够覆盖 miuis_api 全部 21 个接口的完整第三方接口集合；当前可对接的主要是申请单查询、检查/报告状态更新、预约/签到接收和危急值反馈，仍缺少报告回传、队列呼叫、外部访问、删除接收、危急值发送以及 CA 授权/签名/验签链路。",
+    "majorRisks": [
+      "第三方接口多为 XML/HL7 v3，MiUIS 模板多为 HTTP JSON，需要建设协议转换与字段映射层。",
+      "other_api 多个接口请求地址未提供，需要医院或厂商补充 URL/WSDL。",
+      "状态类接口能否覆盖登记前/后、签到前/后、删除和报告状态全生命周期需确认第三方状态码字典。"
+    ]
+  },
+  "miuisApis": [
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-01",
+      "apiName": "通过时间获取申请单",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/HIS/getHISOrderByTime",
+      "targetSystem": "第三方",
+      "purpose": "按开单时间范围获取申请单",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "matched",
+      "confidence": "high",
+      "matchedOtherApiIds": [
+        "1"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "1",
+          "apiName": "检查申请单查询接口",
+          "direction": "Forward",
+          "method": "HTTP JSON",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "第三方",
+          "purpose": "如果pacs那边发现有漏申请单的可以通过这个接口来查询",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 1 为检查申请单查询接口，入参支持申请单有效期间 effectiveTime，可对接按开单时间范围获取申请单。",
+      "integrationGaps": [
+        "第三方请求/返回为 HL7 v3 XML，MiUIS 为 HTTP JSON，需要协议与字段转换。",
+        "请求地址未提供，需确认 URL 或 WSDL。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-02",
+      "apiName": "通过号码获取申请单",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/HIS/getHISOrderById`",
+      "targetSystem": "第三方",
+      "purpose": "按号码获取申请单",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "matched",
+      "confidence": "high",
+      "matchedOtherApiIds": [
+        "1"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "1",
+          "apiName": "检查申请单查询接口",
+          "direction": "Forward",
+          "method": "HTTP JSON",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "第三方",
+          "purpose": "如果pacs那边发现有漏申请单的可以通过这个接口来查询",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 1 查询条件包含申请单编号、门诊号、住院号、患者 ID、身份证号、就诊卡号，可支撑按号码获取申请单。",
+      "integrationGaps": [
+        "需约定 MiUIS medicalId 与 HL7 actId/patientId 各 root 的映射。",
+        "请求地址未提供。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-03",
+      "apiName": "通过号码与号码类型获取申请单",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/HIS/getHISOrderByIdAndType`",
+      "targetSystem": "第三方",
+      "purpose": "按号码与号码类型联合查询申请单",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "matched",
+      "confidence": "medium",
+      "matchedOtherApiIds": [
+        "1"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "1",
+          "apiName": "检查申请单查询接口",
+          "direction": "Forward",
+          "method": "HTTP JSON",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "第三方",
+          "purpose": "如果pacs那边发现有漏申请单的可以通过这个接口来查询",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 1 通过不同 HL7 root 区分申请单号、住院号、门诊号、身份证号、就诊卡号等号码类型，可对接号码+号码类型查询。",
+      "integrationGaps": [
+        "需补充 medicalIdType 到 HL7 root/identifierName 的码表映射。",
+        "第三方接口未显式命名号码类型参数。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-04",
+      "apiName": "提交登记接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "- 登记前：`http://ip:port/channelService/Apply/HIS/preRISOrderSaved`\n- 登记后：`http://ip:port/channelService/Apply/HIS/postRISOrderSaved`",
+      "targetSystem": "第三方",
+      "purpose": "登记前/后向第三方同步登记状态",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "matched",
+      "confidence": "medium",
+      "matchedOtherApiIds": [
+        "2"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "2",
+          "apiName": "检查状态更新服务",
+          "direction": "Forward",
+          "method": "HTTP JSON",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "第三方",
+          "purpose": "用于更新检查状态",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 2 为检查状态更新服务，包含申请单号、报告号、操作人、操作日期、执行科室、检查状态编码/名称，可承载登记前/后状态同步。",
+      "integrationGaps": [
+        "需确认登记前/登记后是否均允许调用同一状态更新接口。",
+        "需建立 MiUIS orderStatus 与第三方检查状态编码映射。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-05",
+      "apiName": "检查签到接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "- 签到前：`http://ip:port/channelService/Apply/HIS/preCheckIn`\n- 签到后：`http://ip:port/channelService/Apply/HIS/postCheckIn`",
+      "targetSystem": "第三方",
+      "purpose": "登记前/后向第三方同步登记状态",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "matched",
+      "confidence": "medium",
+      "matchedOtherApiIds": [
+        "2"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "2",
+          "apiName": "检查状态更新服务",
+          "direction": "Forward",
+          "method": "HTTP JSON",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "第三方",
+          "purpose": "用于更新检查状态",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 2 的检查状态更新可用于同步签到后的检查状态变化。",
+      "integrationGaps": [
+        "需确认签到前置校验是否支持；如仅支持结果通知，则 MiUIS preCheckIn 只能做适配层模拟。",
+        "需确认签到状态编码。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-06",
+      "apiName": "删除检查接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "- 删除前：`http://ip:port/channelService/Apply/HIS/preRISOrderDeleted`\n- 删除后：`http://ip:port/channelService/Apply/HIS/postRISOrderDeleted`",
+      "targetSystem": "第三方",
+      "purpose": "删除检查前/后同步状态",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "partial",
+      "confidence": "medium-low",
+      "matchedOtherApiIds": [
+        "2"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "2",
+          "apiName": "检查状态更新服务",
+          "direction": "Forward",
+          "method": "HTTP JSON",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "第三方",
+          "purpose": "用于更新检查状态",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 2 可更新检查状态，理论上可通过取消/删除类状态编码表达删除检查。",
+      "integrationGaps": [
+        "接口说明未明确删除/撤销语义。",
+        "需确认删除前/删除后双阶段调用、幂等和回滚要求。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-07",
+      "apiName": "查看电子单接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/HIS/getHISOrderByHISID",
+      "targetSystem": "第三方",
+      "purpose": "根据申请单号查看第三方电子单",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "matched",
+      "confidence": "high",
+      "matchedOtherApiIds": [
+        "1"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "1",
+          "apiName": "检查申请单查询接口",
+          "direction": "Forward",
+          "method": "HTTP JSON",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "第三方",
+          "purpose": "如果pacs那边发现有漏申请单的可以通过这个接口来查询",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 1 支持按检查申请单编号查询并返回申请单、患者、就诊、检查项目等完整信息，可用于查看电子单。",
+      "integrationGaps": [
+        "需将 MiUIS hisId 映射到 HL7 检查申请单编号 root=2.16.156.10011.1.24。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-08",
+      "apiName": "获取第三方系统访问信息接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/third/loadExternalSystem/{instanceId}",
+      "targetSystem": "第三方",
+      "purpose": "获取第三方页面地址或报告二维码参数",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 中未发现返回第三方页面 URL、二维码参数或外部系统访问令牌的接口。",
+      "integrationGaps": [
+        "需要新增第三方访问地址/二维码信息接口，或明确通过现有系统配置静态生成。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-09",
+      "apiName": "报告状态变更接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/HIS/orderStatusChangeByReport/{reportStatus}",
+      "targetSystem": "第三方",
+      "purpose": "将报告书写、审核、打印状态同步到第三方系统",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "matched",
+      "confidence": "medium",
+      "matchedOtherApiIds": [
+        "2"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "2",
+          "apiName": "检查状态更新服务",
+          "direction": "Forward",
+          "method": "HTTP JSON",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "第三方",
+          "purpose": "用于更新检查状态",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 2 包含报告号与检查状态编码，可用于同步报告书写、审核、打印等状态。",
+      "integrationGaps": [
+        "需确认第三方状态码是否覆盖报告保存、审核、打印全生命周期。",
+        "MiUIS reportStatus 路径变量需映射为 HL7 status/processStep。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-10",
+      "apiName": "报告回传接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/HIS/sendReport",
+      "targetSystem": "第三方",
+      "purpose": "报告审核并生成PDF后，将报告回传至第三方系统",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 未提供报告正文、PDF、影像/文档附件或结构化报告回传接口。",
+      "integrationGaps": [
+        "需要新增报告回传接口，明确 PDF/base64/URL、报告结论、审核医生、报告号等字段。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-11",
+      "apiName": "呼叫接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/HIS/queueCall",
+      "targetSystem": "第三方",
+      "purpose": "呼叫排队患者",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 未发现排队叫号/呼叫患者的第三方接口。",
+      "integrationGaps": [
+        "需要新增 queueCall 对接能力，或确认叫号由 MiUIS 本地完成无需第三方。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-RECV-01",
+      "apiName": "自动预约/登记接收接口",
+      "direction": "Backward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/mindray-pacs/bridge/orderReceive/register",
+      "targetSystem": "MiUIS",
+      "purpose": "接收第三方预约或登记检查数据，并在Miuis中执行新增/修改、预约入库和映射关系维护",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "partial",
+      "confidence": "medium",
+      "matchedOtherApiIds": [
+        "3"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "3",
+          "apiName": "推送预约信息",
+          "direction": "Backward",
+          "method": "HTTP xml",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "MiUIS",
+          "purpose": "用于推送预约信息到MiUIS",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 3 为推送预约信息到 MiUIS，包含患者、检查单号、项目、预约时间段、队列/房间、检查状态等信息，可对接预约/登记接收主流程。",
+      "integrationGaps": [
+        "字段比 MiUIS 自动预约/登记接收接口少，缺少完整 patient、orderList、queue 结构中的部分字段。",
+        "other_api 为 HTTP XML，需转换为 MiUIS HTTP JSON。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-RECV-02",
+      "apiName": "接收签到接口",
+      "direction": "Backward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/mindray-pacs/bridge/orderReceive/checkIn",
+      "targetSystem": "MiUIS",
+      "purpose": "接收第三方签到指令并在Miuis执行签到",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "partial",
+      "confidence": "medium",
+      "matchedOtherApiIds": [
+        "4"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "4",
+          "apiName": "发送排号信息",
+          "direction": "Backward",
+          "method": "HTTP xml",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "MiUIS",
+          "purpose": "发送签到信息到MiUIS",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 4 用途为发送签到信息到 MiUIS，包含排班编码、号源、患者、预约时间和检查单号等，可对接第三方签到触发。",
+      "integrationGaps": [
+        "MiUIS 接收签到接口以 orderSeq 为核心，other_api 4 更偏排号/签到消息，需确认 sequenceNo、numId、AppFormNo 与 orderSeq/queueId 的映射。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-RECV-03",
+      "apiName": "接收删除检查接口",
+      "direction": "Backward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/mindray-pacs/bridge/orderReceive/delete",
+      "targetSystem": "MiUIS",
+      "purpose": "接收第三方删除检查指令并在Miuis执行删除",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 未发现第三方向 MiUIS 发起删除检查/取消检查的接收接口。",
+      "integrationGaps": [
+        "需要新增删除检查推送接口，或扩展预约/状态消息中的取消状态并确认 MiUIS 可识别。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-EN-01",
+      "apiName": "危急值发送接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/HIS/sendENMessage",
+      "targetSystem": "第三方",
+      "purpose": "向第三方系统发送危急值消息",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 仅提供危急值反馈服务，未提供 MiUIS 向第三方发送危急值通知的接口。",
+      "integrationGaps": [
+        "需要新增危急值通知发送接口，明确 noticeDetailId、患者、报告、危急值内容和接收确认格式。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-EN-02",
+      "apiName": "危急值反馈接收接口",
+      "direction": "backward",
+      "method": "HTTP JSON",
+      "requestUrl": "接口平台接收：http://ip:port/channelService/Apply/PACS/enReceive；Miuis接收：http://ip:port/mindray-pacs/bridge/enBridge/enReceive",
+      "targetSystem": "Miuis系统",
+      "purpose": "接收第三方危急值反馈并回写Miuis",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "partial",
+      "confidence": "medium",
+      "matchedOtherApiIds": [
+        "6"
+      ],
+      "matchedOtherApis": [
+        {
+          "hospitalName": "内蒙古医科大学附属医院",
+          "apiId": "6",
+          "apiName": "3.4.2 危急值反馈服务",
+          "direction": null,
+          "method": "HTTP xml",
+          "requestUrl": "未提供（需要url或者wsdl文件请求）",
+          "targetSystem": "MiUIS",
+          "purpose": "接收到危急值后向外部反馈",
+          "requestFormat": "xml",
+          "responseFormat": "xml"
+        }
+      ],
+      "matchRationale": "other_api 6 为危急值反馈服务，返回/承载患者、就诊号、报告单号、申请单号、处理人、处理时间、处理意见等字段，可对接危急值反馈回写。",
+      "integrationGaps": [
+        "other_api 6 方向未填写且入参示例为“未给出”，需确认实际调用方向、请求体和回执。",
+        "需映射 MiUIS enNoticeDetailId 与第三方 reportBillNo/applyNo。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-CA-01",
+      "apiName": "创建用户认证授权接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/CA/createAuth",
+      "targetSystem": "第三方",
+      "purpose": "创建CA授权任务并返回授权二维码/文本",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 未提供创建 CA 授权任务或返回授权二维码/文本的接口。",
+      "integrationGaps": [
+        "需要独立 CA 服务接口；other_api 5 登陆令牌验证不能替代 CA 医生授权。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-CA-02",
+      "apiName": "获取用户授权结果接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/CA/getAuthResult",
+      "targetSystem": "第三方",
+      "purpose": "根据授权任务标识轮询授权结果",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 未提供按授权任务轮询授权结果的接口。",
+      "integrationGaps": [
+        "需要新增授权结果查询接口。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-CA-03",
+      "apiName": "检验用户授权状态接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/CA/verifyAuth",
+      "targetSystem": "第三方",
+      "purpose": "检验用户授权状态接口",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 未提供 CA 授权状态校验接口。",
+      "integrationGaps": [
+        "需要新增授权有效性校验接口。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-CA-04",
+      "apiName": "报告CA签名接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/CA/signReport",
+      "targetSystem": "第三方",
+      "purpose": "报告CA签名接口",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 未提供报告 CA 签名能力。",
+      "integrationGaps": [
+        "需要新增签名接口，明确待签报告/PDF 摘要、证书、签名值和错误处理。"
+      ]
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-CA-05",
+      "apiName": "获取报告验签地址接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestUrl": "http://ip:port/channelService/Apply/CA/verifyCaSignature",
+      "targetSystem": "第三方",
+      "purpose": "获取报告验签页面地址",
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "matchStatus": "unmatched",
+      "confidence": "none",
+      "matchedOtherApiIds": [],
+      "matchedOtherApis": [],
+      "matchRationale": "other_api 未提供报告验签地址获取接口。",
+      "integrationGaps": [
+        "需要新增验签页面地址或验签结果查询接口。"
+      ]
+    }
+  ],
+  "matchedOtherApis": [
+    {
+      "hospitalName": "内蒙古医科大学附属医院",
+      "apiId": "1",
+      "apiName": "检查申请单查询接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "未提供（需要url或者wsdl文件请求）",
+      "targetSystem": "第三方",
+      "purpose": "如果pacs那边发现有漏申请单的可以通过这个接口来查询",
+      "requestFormat": "xml",
+      "responseFormat": "xml",
+      "coverageType": "检查申请单查询",
+      "coverageAssessment": "可覆盖 MiUIS 申请单按时间、按号码、按号码类型、按 HISID/申请单号查询；需要 JSON/XML 和字段码表转换。",
+      "coveredMiuisApiIds": [
+        "IF-APPLY-01",
+        "IF-APPLY-02",
+        "IF-APPLY-03",
+        "IF-APPLY-07"
+      ],
+      "coveredMiuisApis": [
+        {
+          "apiId": "IF-APPLY-01",
+          "apiName": "通过时间获取申请单",
+          "matchStatus": "matched",
+          "confidence": "high"
+        },
+        {
+          "apiId": "IF-APPLY-02",
+          "apiName": "通过号码获取申请单",
+          "matchStatus": "matched",
+          "confidence": "high"
+        },
+        {
+          "apiId": "IF-APPLY-03",
+          "apiName": "通过号码与号码类型获取申请单",
+          "matchStatus": "matched",
+          "confidence": "medium"
+        },
+        {
+          "apiId": "IF-APPLY-07",
+          "apiName": "查看电子单接口",
+          "matchStatus": "matched",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "hospitalName": "内蒙古医科大学附属医院",
+      "apiId": "2",
+      "apiName": "检查状态更新服务",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestUrl": "未提供（需要url或者wsdl文件请求）",
+      "targetSystem": "第三方",
+      "purpose": "用于更新检查状态",
+      "requestFormat": "xml",
+      "responseFormat": "xml",
+      "coverageType": "检查/报告状态更新",
+      "coverageAssessment": "可覆盖登记、签到、删除和报告状态类通知中的部分或全部状态；删除和前置校验语义需进一步确认。",
+      "coveredMiuisApiIds": [
+        "IF-APPLY-04",
+        "IF-APPLY-05",
+        "IF-APPLY-06",
+        "IF-APPLY-09"
+      ],
+      "coveredMiuisApis": [
+        {
+          "apiId": "IF-APPLY-04",
+          "apiName": "提交登记接口",
+          "matchStatus": "matched",
+          "confidence": "medium"
+        },
+        {
+          "apiId": "IF-APPLY-05",
+          "apiName": "检查签到接口",
+          "matchStatus": "matched",
+          "confidence": "medium"
+        },
+        {
+          "apiId": "IF-APPLY-06",
+          "apiName": "删除检查接口",
+          "matchStatus": "partial",
+          "confidence": "medium-low"
+        },
+        {
+          "apiId": "IF-APPLY-09",
+          "apiName": "报告状态变更接口",
+          "matchStatus": "matched",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "hospitalName": "内蒙古医科大学附属医院",
+      "apiId": "3",
+      "apiName": "推送预约信息",
+      "direction": "Backward",
+      "method": "HTTP xml",
+      "requestUrl": "未提供（需要url或者wsdl文件请求）",
+      "targetSystem": "MiUIS",
+      "purpose": "用于推送预约信息到MiUIS",
+      "requestFormat": "xml",
+      "responseFormat": "xml",
+      "coverageType": "预约信息推送到 MiUIS",
+      "coverageAssessment": "可部分覆盖 MiUIS 自动预约/登记接收；字段完整性和 XML 到 JSON 转换需补齐。",
+      "coveredMiuisApiIds": [
+        "IF-RECV-01"
+      ],
+      "coveredMiuisApis": [
+        {
+          "apiId": "IF-RECV-01",
+          "apiName": "自动预约/登记接收接口",
+          "matchStatus": "partial",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "hospitalName": "内蒙古医科大学附属医院",
+      "apiId": "4",
+      "apiName": "发送排号信息",
+      "direction": "Backward",
+      "method": "HTTP xml",
+      "requestUrl": "未提供（需要url或者wsdl文件请求）",
+      "targetSystem": "MiUIS",
+      "purpose": "发送签到信息到MiUIS",
+      "requestFormat": "xml",
+      "responseFormat": "xml",
+      "coverageType": "排号/签到信息推送到 MiUIS",
+      "coverageAssessment": "可部分覆盖 MiUIS 接收签到；需确认排班号/号源/检查单号与 MiUIS orderSeq 的主键映射。",
+      "coveredMiuisApiIds": [
+        "IF-RECV-02"
+      ],
+      "coveredMiuisApis": [
+        {
+          "apiId": "IF-RECV-02",
+          "apiName": "接收签到接口",
+          "matchStatus": "partial",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "hospitalName": "内蒙古医科大学附属医院",
+      "apiId": "6",
+      "apiName": "3.4.2 危急值反馈服务",
+      "direction": null,
+      "method": "HTTP xml",
+      "requestUrl": "未提供（需要url或者wsdl文件请求）",
+      "targetSystem": "MiUIS",
+      "purpose": "接收到危急值后向外部反馈",
+      "requestFormat": "xml",
+      "responseFormat": "xml",
+      "coverageType": "危急值反馈",
+      "coverageAssessment": "可部分覆盖 MiUIS 危急值反馈接收；方向、入参和回执需确认。",
+      "coveredMiuisApiIds": [
+        "IF-EN-02"
+      ],
+      "coveredMiuisApis": [
+        {
+          "apiId": "IF-EN-02",
+          "apiName": "危急值反馈接收接口",
+          "matchStatus": "partial",
+          "confidence": "medium"
+        }
+      ]
+    }
+  ],
+  "unmatchedMiuisApis": [
+    {
+      "apiId": "IF-APPLY-08",
+      "apiName": "获取第三方系统访问信息接口",
+      "direction": "Forward",
+      "purpose": "获取第三方页面地址或报告二维码参数",
+      "reason": "other_api 中未发现返回第三方页面 URL、二维码参数或外部系统访问令牌的接口。",
+      "requiredAction": [
+        "需要新增第三方访问地址/二维码信息接口，或明确通过现有系统配置静态生成。"
+      ]
+    },
+    {
+      "apiId": "IF-APPLY-10",
+      "apiName": "报告回传接口",
+      "direction": "Forward",
+      "purpose": "报告审核并生成PDF后，将报告回传至第三方系统",
+      "reason": "other_api 未提供报告正文、PDF、影像/文档附件或结构化报告回传接口。",
+      "requiredAction": [
+        "需要新增报告回传接口，明确 PDF/base64/URL、报告结论、审核医生、报告号等字段。"
+      ]
+    },
+    {
+      "apiId": "IF-APPLY-11",
+      "apiName": "呼叫接口",
+      "direction": "Forward",
+      "purpose": "呼叫排队患者",
+      "reason": "other_api 未发现排队叫号/呼叫患者的第三方接口。",
+      "requiredAction": [
+        "需要新增 queueCall 对接能力，或确认叫号由 MiUIS 本地完成无需第三方。"
+      ]
+    },
+    {
+      "apiId": "IF-RECV-03",
+      "apiName": "接收删除检查接口",
+      "direction": "Backward",
+      "purpose": "接收第三方删除检查指令并在Miuis执行删除",
+      "reason": "other_api 未发现第三方向 MiUIS 发起删除检查/取消检查的接收接口。",
+      "requiredAction": [
+        "需要新增删除检查推送接口，或扩展预约/状态消息中的取消状态并确认 MiUIS 可识别。"
+      ]
+    },
+    {
+      "apiId": "IF-EN-01",
+      "apiName": "危急值发送接口",
+      "direction": "Forward",
+      "purpose": "向第三方系统发送危急值消息",
+      "reason": "other_api 仅提供危急值反馈服务，未提供 MiUIS 向第三方发送危急值通知的接口。",
+      "requiredAction": [
+        "需要新增危急值通知发送接口，明确 noticeDetailId、患者、报告、危急值内容和接收确认格式。"
+      ]
+    },
+    {
+      "apiId": "IF-CA-01",
+      "apiName": "创建用户认证授权接口",
+      "direction": "forward",
+      "purpose": "创建CA授权任务并返回授权二维码/文本",
+      "reason": "other_api 未提供创建 CA 授权任务或返回授权二维码/文本的接口。",
+      "requiredAction": [
+        "需要独立 CA 服务接口；other_api 5 登陆令牌验证不能替代 CA 医生授权。"
+      ]
+    },
+    {
+      "apiId": "IF-CA-02",
+      "apiName": "获取用户授权结果接口",
+      "direction": "forward",
+      "purpose": "根据授权任务标识轮询授权结果",
+      "reason": "other_api 未提供按授权任务轮询授权结果的接口。",
+      "requiredAction": [
+        "需要新增授权结果查询接口。"
+      ]
+    },
+    {
+      "apiId": "IF-CA-03",
+      "apiName": "检验用户授权状态接口",
+      "direction": "forward",
+      "purpose": "检验用户授权状态接口",
+      "reason": "other_api 未提供 CA 授权状态校验接口。",
+      "requiredAction": [
+        "需要新增授权有效性校验接口。"
+      ]
+    },
+    {
+      "apiId": "IF-CA-04",
+      "apiName": "报告CA签名接口",
+      "direction": "forward",
+      "purpose": "报告CA签名接口",
+      "reason": "other_api 未提供报告 CA 签名能力。",
+      "requiredAction": [
+        "需要新增签名接口，明确待签报告/PDF 摘要、证书、签名值和错误处理。"
+      ]
+    },
+    {
+      "apiId": "IF-CA-05",
+      "apiName": "获取报告验签地址接口",
+      "direction": "forward",
+      "purpose": "获取报告验签页面地址",
+      "reason": "other_api 未提供报告验签地址获取接口。",
+      "requiredAction": [
+        "需要新增验签页面地址或验签结果查询接口。"
+      ]
+    }
+  ],
+  "unmatchedOtherApis": [
+    {
+      "hospitalName": "内蒙古医科大学附属医院",
+      "apiId": "5",
+      "apiName": "登陆操作",
+      "direction": "Backward",
+      "method": "HTTP xml",
+      "requestUrl": "http://192.168.2.236/services/WSInterface?wsdl",
+      "targetSystem": "第三方",
+      "purpose": "登陆令牌验证",
+      "requestFormat": "xml",
+      "responseFormat": "xml",
+      "coverageType": "令牌验证",
+      "coverageAssessment": "作为集成鉴权辅助接口可使用，但不直接覆盖任一 MiUIS 业务接口，也不能替代 CA 授权/签名接口。"
+    }
+  ],
+  "recommendations": [
+    "优先用 other_api 1 对接 IF-APPLY-01/02/03/07，并建立 MiUIS condition/hisId/medicalId 到 HL7 actId、patientId、effectiveTime 的字段映射。",
+    "用 other_api 2 统一承接登记、签到、删除和报告状态变更前，先确认第三方检查状态编码、是否支持删除/取消语义，以及 MiUIS pre/post 调用阶段的处理策略。",
+    "用 other_api 3、4 对接 MiUIS 入站预约/登记和签到时，需要补齐 XML 到 JSON 的转换规则，并明确 AppFormNo、sequenceNo、numId 与 MiUIS orderSeq、queueId、hisId 的主键关系。",
+    "对 IF-APPLY-10、IF-APPLY-11、IF-RECV-03、IF-EN-01、IF-APPLY-08 以及 IF-CA-01 至 IF-CA-05，需要第三方新增接口或给出替代方案。",
+    "other_api 5 可作为外部 WebService 调用的令牌校验辅助能力，但不应归类为 MiUIS CA 授权、签名或验签接口。",
+    "正式联调前应由双方确认 URL/WSDL、鉴权方式、成功/失败回执、重试/幂等策略、编码字典和异常处理格式。"
+  ]
+}

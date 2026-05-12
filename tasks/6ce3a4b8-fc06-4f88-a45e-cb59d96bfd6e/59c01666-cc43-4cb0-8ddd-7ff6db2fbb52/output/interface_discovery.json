@@ -1,0 +1,11 @@
+{
+  "taskId": null,
+  "windowId": "59c01666-cc43-4cb0-8ddd-7ff6db2fbb52",
+  "sourceFilePath": "tasks/6ce3a4b8-fc06-4f88-a45e-cb59d96bfd6e/59c01666-cc43-4cb0-8ddd-7ff6db2fbb52/input/MiUIS_HIS_Interface_Template.xlsx",
+  "status": "pending",
+  "summary": "Cloud Agent 尚未写入分析结果。",
+  "miuisApis": [],
+  "matchedOtherApis": [],
+  "unmatchedMiuisApis": [],
+  "recommendations": []
+}

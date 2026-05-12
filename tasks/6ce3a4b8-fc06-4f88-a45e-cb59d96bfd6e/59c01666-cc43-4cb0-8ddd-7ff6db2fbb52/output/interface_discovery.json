@@ -1,0 +1,700 @@
+{
+  "taskId": "446df933-ec82-4330-aaff-68b63011c8da",
+  "windowId": "59c01666-cc43-4cb0-8ddd-7ff6db2fbb52",
+  "sourceFilePath": "tasks/6ce3a4b8-fc06-4f88-a45e-cb59d96bfd6e/59c01666-cc43-4cb0-8ddd-7ff6db2fbb52/input/MiUIS_HIS_Interface_Template.xlsx",
+  "status": "completed",
+  "summary": {
+    "message": "已完成 miuis_api 与 other_api 接口对接分析；other_api 只能覆盖部分 MiUIS 接口，无法覆盖全部接口。",
+    "miuisApiCount": 21,
+    "otherApiCount": 6,
+    "matchedMiuisApiCount": 11,
+    "unmatchedMiuisApiCount": 10,
+    "matchedOtherApiCount": 5,
+    "coverageRatio": 0.5238,
+    "coverageConclusion": "未发现能够覆盖 miuis_api 全部接口的单个或组合第三方接口；需要新增/补充多个第三方接口后才能完整对接。",
+    "inputFilePresentInWorkspace": true
+  },
+  "miuisApis": [
+    {
+      "apiId": "IF-APPLY-01",
+      "name": "通过时间获取申请单",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/getHISOrderByTime",
+      "targetSystem": "第三方",
+      "purpose": "按开单时间范围获取申请单",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "- 触发时机：登记员在登记界面设置查询条件并点击查询，且未填写查询号码\n- 前置条件：\n  - 第三方系统支持按时间查询申请单，或已将申请单数据预先写入中间表/视图\n  - 申请单存在开单时间字段",
+      "matchedOtherApiIds": [
+        "1"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-APPLY-02",
+      "name": "通过号码获取申请单",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/getHISOrderById`",
+      "targetSystem": "第三方",
+      "purpose": "按号码获取申请单",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "- 触发时机：登记员已获取电子单号码，例如扫描条码\n- 前置条件：第三方支持按号码查询",
+      "matchedOtherApiIds": [
+        "1"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-APPLY-03",
+      "name": "通过号码与号码类型获取申请单",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/getHISOrderByIdAndType`",
+      "targetSystem": "第三方",
+      "purpose": "按号码与号码类型联合查询申请单",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：登记员明确知道号码类型，且不同号码类型可能存在重复",
+      "matchedOtherApiIds": [
+        "1"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-APPLY-04",
+      "name": "提交登记接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "- 登记前：`http://ip:port/channelService/Apply/HIS/preRISOrderSaved`\n- 登记后：`http://ip:port/channelService/Apply/HIS/postRISOrderSaved`",
+      "targetSystem": "第三方",
+      "purpose": "登记前/后向第三方同步登记状态",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：医生完成登记信息填写并点击提交",
+      "matchedOtherApiIds": [
+        "2"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-APPLY-05",
+      "name": "检查签到接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "- 签到前：`http://ip:port/channelService/Apply/HIS/preCheckIn`\n- 签到后：`http://ip:port/channelService/Apply/HIS/postCheckIn`",
+      "targetSystem": "第三方",
+      "purpose": "登记前/后向第三方同步登记状态",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：医生在已登记列表或检查列表对已预约检查执行签到",
+      "matchedOtherApiIds": [
+        "2"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-APPLY-06",
+      "name": "删除检查接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "- 删除前：`http://ip:port/channelService/Apply/HIS/preRISOrderDeleted`\n- 删除后：`http://ip:port/channelService/Apply/HIS/postRISOrderDeleted`",
+      "targetSystem": "第三方",
+      "purpose": "删除检查前/后同步状态",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：医生在已登记列表或检查列表选择检查执行删除",
+      "matchedOtherApiIds": [
+        "2"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-APPLY-07",
+      "name": "查看电子单接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/getHISOrderByHISID",
+      "targetSystem": "第三方",
+      "purpose": "根据申请单号查看第三方电子单",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：医生进入报告书写界面或检查列表点击“查看电子单”",
+      "matchedOtherApiIds": [
+        "1"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-APPLY-08",
+      "name": "获取第三方系统访问信息接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/third/loadExternalSystem/{instanceId}",
+      "targetSystem": "第三方",
+      "purpose": "获取第三方页面地址或报告二维码参数",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "- 触发时机：前端生成报告二维码或访问第三方页面\n- 前置条件：已配置对应按钮及 `instanceId`",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-APPLY-09",
+      "name": "报告状态变更接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/orderStatusChangeByReport/{reportStatus}",
+      "targetSystem": "第三方",
+      "purpose": "将报告书写、审核、打印状态同步到第三方系统",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "- 触发时机：用户保存报告、审核报告、打印报告\n- 前置条件：存在报告主键 `reportSeq`",
+      "matchedOtherApiIds": [
+        "2"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-APPLY-10",
+      "name": "报告回传接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/sendReport",
+      "targetSystem": "第三方",
+      "purpose": "报告审核并生成PDF后，将报告回传至第三方系统",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "备注: 触发时机：报告审核并生成PDF后；前置条件：存在报告主键reportSeq",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-APPLY-11",
+      "name": "呼叫接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/queueCall",
+      "targetSystem": "第三方",
+      "purpose": "呼叫排队患者",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：Miuis执行呼叫操作时；前置条件：存在queueId",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-RECV-01",
+      "name": "自动预约/登记接收接口",
+      "direction": "Backward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/mindray-pacs/bridge/orderReceive/register",
+      "targetSystem": "MiUIS",
+      "purpose": "接收第三方预约或登记检查数据，并在Miuis中执行新增/修改、预约入库和映射关系维护",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "第三方系统预约或登记检查项目后；前置条件：userId在t_user可查，检查项目与队列映射已配置",
+      "matchedOtherApiIds": [
+        "3"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-RECV-02",
+      "name": "接收签到接口",
+      "direction": "Backward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/mindray-pacs/bridge/orderReceive/checkIn",
+      "targetSystem": "MiUIS",
+      "purpose": "接收第三方签到指令并在Miuis执行签到",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：第三方系统发起签到；前置条件：userId在t_user可查，orderSeq合法",
+      "matchedOtherApiIds": [
+        "4"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-RECV-03",
+      "name": "接收删除检查接口",
+      "direction": "Backward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/mindray-pacs/bridge/orderReceive/delete",
+      "targetSystem": "MiUIS",
+      "purpose": "接收第三方删除检查指令并在Miuis执行删除",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：第三方系统发起删除检查；前置条件：userId在t_user可查，orderSeq合法",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-EN-01",
+      "name": "危急值发送接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/sendENMessage",
+      "targetSystem": "第三方",
+      "purpose": "向第三方系统发送危急值消息",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：危急值产生并需外发时；前置条件：存在危急值推送主键",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-EN-02",
+      "name": "危急值反馈接收接口",
+      "direction": "backward",
+      "method": "HTTP JSON",
+      "requestAddress": "接口平台接收：http://ip:port/channelService/Apply/PACS/enReceive；Miuis接收：http://ip:port/mindray-pacs/bridge/enBridge/enReceive",
+      "targetSystem": "Miuis系统",
+      "purpose": "接收第三方危急值反馈并回写Miuis",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：第三方处理危急值后反馈；前置条件：危急值通知已存在",
+      "matchedOtherApiIds": [
+        "6"
+      ],
+      "matchStatus": "matched"
+    },
+    {
+      "apiId": "IF-CA-01",
+      "name": "创建用户认证授权接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/createAuth",
+      "targetSystem": "第三方",
+      "purpose": "创建CA授权任务并返回授权二维码/文本",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：报告审核前发现授权失效或首次授权；前置条件：具备Miuis用户与CA关联信息",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-CA-02",
+      "name": "获取用户授权结果接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/getAuthResult",
+      "targetSystem": "第三方",
+      "purpose": "根据授权任务标识轮询授权结果",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：创建授权任务后定时轮询；前置条件：已获取authTaskId",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-CA-03",
+      "name": "检验用户授权状态接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/verifyAuth",
+      "targetSystem": "第三方",
+      "purpose": "检验用户授权状态接口",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：审核报告前；前置条件：已获得caAuthCode与authEndTime",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-CA-04",
+      "name": "报告CA签名接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/signReport",
+      "targetSystem": "第三方",
+      "purpose": "报告CA签名接口",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：用户审核报告且授权有效；前置条件：已获得有效caAuthCode",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    },
+    {
+      "apiId": "IF-CA-05",
+      "name": "获取报告验签地址接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/verifyCaSignature",
+      "targetSystem": "第三方",
+      "purpose": "获取报告验签页面地址",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：用户点击\"报告验签\"；前置条件：报告已存在签名记录",
+      "matchedOtherApiIds": [],
+      "matchStatus": "unmatched"
+    }
+  ],
+  "matchedOtherApis": [
+    {
+      "otherApiId": "1",
+      "coverageLevel": "partial",
+      "confidence": "high",
+      "rationale": "第三方“检查申请单查询接口”可按申请单号、住院号、门诊号、患者 ID、有效时间范围查询检查申请单；工作簿映射表已显式将其映射到 IF-APPLY-02，字段映射还包含 startDt/endDt，因此也可改造覆盖按时间、按号码与查看电子单类查询。",
+      "requiredAdaptation": [
+        "MiUIS 为 HTTP JSON，第三方样例为 HL7 v3 XML，需要 JSON/XML 协议与字段转换。",
+        "medicalIdType 需映射为 HL7 actId/patientId 中不同 root 的号码类型。",
+        "第三方未提供实际 URL/WSDL，需要实施阶段补齐请求地址。"
+      ],
+      "otherApi": {
+        "apiId": "1",
+        "name": "检查申请单查询接口",
+        "direction": "Forward",
+        "method": "HTTP JSON",
+        "requestAddress": "未提供（需要url或者wsdl文件请求）",
+        "targetSystem": "第三方",
+        "purpose": "如果pacs那边发现有漏申请单的可以通过这个接口来查询",
+        "realTime": true,
+        "requestFormat": "xml",
+        "responseFormat": "xml",
+        "notes": "如果pacs那边发现有漏申请单的可以通过这个接口来查询，按需要来，因为v3的消息庞大，建议只查单个申请单信息。"
+      },
+      "matchedMiuisApis": [
+        {
+          "apiId": "IF-APPLY-01",
+          "name": "通过时间获取申请单",
+          "direction": "Forward",
+          "purpose": "按开单时间范围获取申请单"
+        },
+        {
+          "apiId": "IF-APPLY-02",
+          "name": "通过号码获取申请单",
+          "direction": "Forward",
+          "purpose": "按号码获取申请单"
+        },
+        {
+          "apiId": "IF-APPLY-03",
+          "name": "通过号码与号码类型获取申请单",
+          "direction": "Forward",
+          "purpose": "按号码与号码类型联合查询申请单"
+        },
+        {
+          "apiId": "IF-APPLY-07",
+          "name": "查看电子单接口",
+          "direction": "Forward",
+          "purpose": "根据申请单号查看第三方电子单"
+        }
+      ]
+    },
+    {
+      "otherApiId": "2",
+      "coverageLevel": "partial",
+      "confidence": "medium",
+      "rationale": "第三方“检查状态更新服务”用于更新检查单状态，字段包含申请单号、报告号、操作人、执行科室和检查状态，可对接登记、签到、删除以及报告状态变更等状态同步场景。",
+      "requiredAdaptation": [
+        "需要建立 MiUIS orderStatus/reportStatus 与第三方检查状态编码表的枚举映射。",
+        "登记前/后、签到前/后、删除前/后语义需通过状态编码或业务规则区分。",
+        "第三方未提供实际 URL/WSDL，需要实施阶段补齐请求地址。"
+      ],
+      "otherApi": {
+        "apiId": "2",
+        "name": "检查状态更新服务",
+        "direction": "Forward",
+        "method": "HTTP JSON",
+        "requestAddress": "未提供（需要url或者wsdl文件请求）",
+        "targetSystem": "第三方",
+        "purpose": "用于更新检查状态",
+        "realTime": true,
+        "requestFormat": "xml",
+        "responseFormat": "xml",
+        "notes": "用于更新检查单的状态信息"
+      },
+      "matchedMiuisApis": [
+        {
+          "apiId": "IF-APPLY-04",
+          "name": "提交登记接口",
+          "direction": "Forward",
+          "purpose": "登记前/后向第三方同步登记状态"
+        },
+        {
+          "apiId": "IF-APPLY-05",
+          "name": "检查签到接口",
+          "direction": "Forward",
+          "purpose": "登记前/后向第三方同步登记状态"
+        },
+        {
+          "apiId": "IF-APPLY-06",
+          "name": "删除检查接口",
+          "direction": "Forward",
+          "purpose": "删除检查前/后同步状态"
+        },
+        {
+          "apiId": "IF-APPLY-09",
+          "name": "报告状态变更接口",
+          "direction": "Forward",
+          "purpose": "将报告书写、审核、打印状态同步到第三方系统"
+        }
+      ]
+    },
+    {
+      "otherApiId": "3",
+      "coverageLevel": "direct",
+      "confidence": "high",
+      "rationale": "第三方“推送预约信息”方向为 Backward、目标为 MiUIS，包含患者、检查单号、项目、预约时间段、队列/房间等字段，可对接 MiUIS 自动预约/登记接收接口。",
+      "requiredAdaptation": [
+        "第三方为 HTTP XML，MiUIS 样例为 HTTP JSON，需要报文转换。",
+        "检查项目、队列、科室、用户等基础字典需提前维护映射。"
+      ],
+      "otherApi": {
+        "apiId": "3",
+        "name": "推送预约信息",
+        "direction": "Backward",
+        "method": "HTTP xml",
+        "requestAddress": "未提供（需要url或者wsdl文件请求）",
+        "targetSystem": "MiUIS",
+        "purpose": "用于推送预约信息到MiUIS",
+        "realTime": true,
+        "requestFormat": "xml",
+        "responseFormat": "xml",
+        "notes": "用于推送预约信息到MiUIS"
+      },
+      "matchedMiuisApis": [
+        {
+          "apiId": "IF-RECV-01",
+          "name": "自动预约/登记接收接口",
+          "direction": "Backward",
+          "purpose": "接收第三方预约或登记检查数据，并在Miuis中执行新增/修改、预约入库和映射关系维护"
+        }
+      ]
+    },
+    {
+      "otherApiId": "4",
+      "coverageLevel": "partial",
+      "confidence": "medium",
+      "rationale": "第三方“发送排号信息”用于推送签到/排号信息到 MiUIS，包含患者、预约日期、检查单号、报到后检查号码等，可作为 MiUIS 接收签到接口的数据来源。",
+      "requiredAdaptation": [
+        "需确认第三方推送时机是否等同于 MiUIS checkIn 语义。",
+        "MiUIS 接口以 orderSeq 为核心，第三方样例以 AppFormNo/AppFormNos 与排号字段为主，需要补齐 orderSeq 映射。"
+      ],
+      "otherApi": {
+        "apiId": "4",
+        "name": "发送排号信息",
+        "direction": "Backward",
+        "method": "HTTP xml",
+        "requestAddress": "未提供（需要url或者wsdl文件请求）",
+        "targetSystem": "MiUIS",
+        "purpose": "发送签到信息到MiUIS",
+        "realTime": true,
+        "requestFormat": "xml",
+        "responseFormat": "xml",
+        "notes": "用于推送签到信息到MiUIS"
+      },
+      "matchedMiuisApis": [
+        {
+          "apiId": "IF-RECV-02",
+          "name": "接收签到接口",
+          "direction": "Backward",
+          "purpose": "接收第三方签到指令并在Miuis执行签到"
+        }
+      ]
+    },
+    {
+      "otherApiId": "6",
+      "coverageLevel": "partial",
+      "confidence": "medium",
+      "rationale": "第三方“危急值反馈服务”包含报告单号、申请单号、处理人、处理时间、反馈意见等字段，与 MiUIS 危急值反馈接收接口的处理反馈场景匹配。",
+      "requiredAdaptation": [
+        "需确认接口方向和实际调用方；Sheet 中交互方向为空。",
+        "MiUIS 使用 enNoticeDetailId，第三方使用 reportBillNo/applyNo，需要建立危急值通知主键关联。"
+      ],
+      "otherApi": {
+        "apiId": "6",
+        "name": "3.4.2 危急值反馈服务",
+        "direction": null,
+        "method": "HTTP xml",
+        "requestAddress": "未提供（需要url或者wsdl文件请求）",
+        "targetSystem": "MiUIS",
+        "purpose": "接收到危急值后向外部反馈",
+        "realTime": true,
+        "requestFormat": "xml",
+        "responseFormat": "xml",
+        "notes": "subjectClass内容限制为如下：020201 超声检查\n    020202 放射检查\n    020203 核医学检查\n    020204 内窥镜检查\n    020205 病理检查\n    020206 心电检查\n    020207 脑电图检查\n    020208 肌电图检查\n    020209 胃肠动力检查\n    020210 肺功能检查\n    020211 睡眠呼吸监测\n    020212 常规病理检查\n    020213 快速病理检查\n    020214 液基细胞检查\n    020215 细胞学检查\n    020216 病理会诊检查\n    020299 其他检查记录"
+      },
+      "matchedMiuisApis": [
+        {
+          "apiId": "IF-EN-02",
+          "name": "危急值反馈接收接口",
+          "direction": "backward",
+          "purpose": "接收第三方危急值反馈并回写Miuis"
+        }
+      ]
+    }
+  ],
+  "unmatchedMiuisApis": [
+    {
+      "apiId": "IF-APPLY-08",
+      "name": "获取第三方系统访问信息接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/third/loadExternalSystem/{instanceId}",
+      "targetSystem": "第三方",
+      "purpose": "获取第三方页面地址或报告二维码参数",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "- 触发时机：前端生成报告二维码或访问第三方页面\n- 前置条件：已配置对应按钮及 `instanceId`",
+      "reason": "other_api 中没有返回第三方页面地址、二维码参数或外部系统访问令牌的接口。"
+    },
+    {
+      "apiId": "IF-APPLY-10",
+      "name": "报告回传接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/sendReport",
+      "targetSystem": "第三方",
+      "purpose": "报告审核并生成PDF后，将报告回传至第三方系统",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "备注: 触发时机：报告审核并生成PDF后；前置条件：存在报告主键reportSeq",
+      "reason": "other_api 中没有报告 PDF/结构化报告回传接口；检查状态更新服务不包含报告正文或文件内容。"
+    },
+    {
+      "apiId": "IF-APPLY-11",
+      "name": "呼叫接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/queueCall",
+      "targetSystem": "第三方",
+      "purpose": "呼叫排队患者",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：Miuis执行呼叫操作时；前置条件：存在queueId",
+      "reason": "other_api 中没有 MiUIS 向第三方发起患者呼叫/排队叫号的接口。"
+    },
+    {
+      "apiId": "IF-RECV-03",
+      "name": "接收删除检查接口",
+      "direction": "Backward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/mindray-pacs/bridge/orderReceive/delete",
+      "targetSystem": "MiUIS",
+      "purpose": "接收第三方删除检查指令并在Miuis执行删除",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：第三方系统发起删除检查；前置条件：userId在t_user可查，orderSeq合法",
+      "reason": "other_api 中没有第三方向 MiUIS 发起删除检查的明确接口；状态更新服务方向和语义不匹配。"
+    },
+    {
+      "apiId": "IF-EN-01",
+      "name": "危急值发送接口",
+      "direction": "Forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/HIS/sendENMessage",
+      "targetSystem": "第三方",
+      "purpose": "向第三方系统发送危急值消息",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：危急值产生并需外发时；前置条件：存在危急值推送主键",
+      "reason": "other_api 中只有危急值反馈服务，没有接收 MiUIS 初始危急值消息的接口。"
+    },
+    {
+      "apiId": "IF-CA-01",
+      "name": "创建用户认证授权接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/createAuth",
+      "targetSystem": "第三方",
+      "purpose": "创建CA授权任务并返回授权二维码/文本",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：报告审核前发现授权失效或首次授权；前置条件：具备Miuis用户与CA关联信息",
+      "reason": "other_api 中没有 CA 创建授权任务接口。"
+    },
+    {
+      "apiId": "IF-CA-02",
+      "name": "获取用户授权结果接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/getAuthResult",
+      "targetSystem": "第三方",
+      "purpose": "根据授权任务标识轮询授权结果",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：创建授权任务后定时轮询；前置条件：已获取authTaskId",
+      "reason": "other_api 中没有 CA 授权结果查询接口。"
+    },
+    {
+      "apiId": "IF-CA-03",
+      "name": "检验用户授权状态接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/verifyAuth",
+      "targetSystem": "第三方",
+      "purpose": "检验用户授权状态接口",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：审核报告前；前置条件：已获得caAuthCode与authEndTime",
+      "reason": "other_api 中没有 CA 授权状态校验接口。"
+    },
+    {
+      "apiId": "IF-CA-04",
+      "name": "报告CA签名接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/signReport",
+      "targetSystem": "第三方",
+      "purpose": "报告CA签名接口",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：用户审核报告且授权有效；前置条件：已获得有效caAuthCode",
+      "reason": "other_api 中没有报告 CA 签名接口。"
+    },
+    {
+      "apiId": "IF-CA-05",
+      "name": "获取报告验签地址接口",
+      "direction": "forward",
+      "method": "HTTP JSON",
+      "requestAddress": "http://ip:port/channelService/Apply/CA/verifyCaSignature",
+      "targetSystem": "第三方",
+      "purpose": "获取报告验签页面地址",
+      "realTime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "notes": "触发时机：用户点击\"报告验签\"；前置条件：报告已存在签名记录",
+      "reason": "other_api 中没有报告验签地址获取接口。"
+    }
+  ],
+  "recommendations": [
+    "优先确认第三方 1、2、3、4、6 号接口的实际 URL/WSDL、鉴权方式、错误码和生产环境可用性。",
+    "建立 JSON 与 XML/HL7 v3 的转换层，重点处理申请单号、患者号、时间范围、检查状态、报告状态、危急值通知主键等字段映射。",
+    "新增或补充第三方接口以覆盖外部系统访问/二维码、报告回传、队列呼叫、第三方删除检查、危急值初始发送以及 CA 授权/签名/验签链路。",
+    "对状态类接口制定统一枚举映射，明确登记前/后、签到前/后、删除前/后、报告保存/审核/打印等事件到第三方检查状态编码的转换规则。",
+    "对 Backward 接口确认 MiUIS 接收端实际支持 XML 还是需要接口平台转 JSON，并补齐 orderSeq、queueId、enNoticeDetailId 等 MiUIS 内部主键关联策略。"
+  ]
+}

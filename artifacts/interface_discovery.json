@@ -1,11 +1,18 @@
 {
-  "taskId": null,
+  "taskId": "5c220182-a660-48ed-aae8-ceb4d7a0b124",
   "windowId": "59c01666-cc43-4cb0-8ddd-7ff6db2fbb52",
   "sourceFilePath": "tasks/6ce3a4b8-fc06-4f88-a45e-cb59d96bfd6e/59c01666-cc43-4cb0-8ddd-7ff6db2fbb52/input/MiUIS_HIS_Interface_Template.xlsx",
-  "status": "pending",
-  "summary": "Cloud Agent 尚未写入分析结果。",
+  "status": "failed",
+  "summary": "未能执行 MiUIS 接口对接分析，因为指定 XLSX 输入文件在当前工作区中不存在。",
   "miuisApis": [],
   "matchedOtherApis": [],
   "unmatchedMiuisApis": [],
-  "recommendations": []
+  "recommendations": [
+    "请确认 XLSX 文件已提交到指定仓库路径后重新运行分析。",
+    "需要包含 miuis_api 与 other_api 两个 Sheet，才能完成接口覆盖或对接匹配。"
+  ],
+  "error": {
+    "type": "FileNotFoundError",
+    "message": "输入文件不存在：tasks/6ce3a4b8-fc06-4f88-a45e-cb59d96bfd6e/59c01666-cc43-4cb0-8ddd-7ff6db2fbb52/input/MiUIS_HIS_Interface_Template.xlsx"
+  }
 }

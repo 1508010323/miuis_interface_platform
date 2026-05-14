@@ -1,11 +1,550 @@
 {
-  "taskId": null,
+  "taskId": "60908370-499a-4a19-8fa0-2994b3cddb6b",
   "windowId": "83b979bc-67d9-4171-a82d-4992f1153887",
+  "userId": "8ab9126f-741f-41e0-aa23-1f87da8e422f",
   "sourceFilePath": "tasks/8ab9126f-741f-41e0-aa23-1f87da8e422f/83b979bc-67d9-4171-a82d-4992f1153887/input/MiUIS_HIS_Interface_Template.xlsx",
-  "status": "pending",
-  "summary": "Cloud Agent 尚未写入分析结果。",
-  "miuisApis": [],
-  "matchedOtherApis": [],
-  "unmatchedMiuisApis": [],
-  "recommendations": []
+  "generatedAt": "2026-05-14T07:32:30.474730+00:00",
+  "status": "success",
+  "summary": {
+    "text": "已完成 miuis_api 与 other_api 的接口发现分析：8 个 MiUIS 接口中 6 个存在可对接的第三方接口候选，2 个未在 other_api 中找到可覆盖接口。未发现一个或一组无需新增能力即可覆盖所有 MiUIS 接口的第三方接口集合；需补充外部系统访问信息接口和危急值发送接收能力。",
+    "miuisApiCount": 8,
+    "otherApiCount": 6,
+    "matchedMiuisApiCount": 6,
+    "unmatchedMiuisApiCount": 2,
+    "coverageStatus": "partial",
+    "coveredMiuisApiIds": [
+      "IF-APPLY-01",
+      "IF-APPLY-02",
+      "IF-APPLY-03",
+      "IF-APPLY-07",
+      "IF-APPLY-09",
+      "IF-EN-02"
+    ],
+    "unmatchedMiuisApiIds": [
+      "IF-APPLY-08",
+      "IF-EN-01"
+    ],
+    "matchedOtherApiIds": [
+      "1",
+      "2",
+      "6"
+    ]
+  },
+  "sourceWorkbook": {
+    "sheetNames": [
+      "miuis_api",
+      "other_api",
+      "接口映射表",
+      "字段映射表"
+    ],
+    "sheetRowCounts": {
+      "miuis_api": 9,
+      "other_api": 7,
+      "接口映射表": 2,
+      "字段映射表": 5
+    },
+    "headers": {
+      "miuis_api": [
+        "医院名称",
+        "接口ID",
+        "接口名称",
+        "交互方向",
+        "交互方式",
+        "请求地址",
+        "对接系统",
+        "接口用途",
+        "实时",
+        "备注",
+        "入参格式",
+        "入参示例",
+        "返回值格式",
+        "返回值示例",
+        "错误处理格式",
+        "错误处理",
+        "接口样例"
+      ],
+      "other_api": [
+        "医院名称",
+        "接口ID",
+        "接口名称",
+        "交互方向",
+        "交互方式",
+        "请求地址",
+        "对接系统",
+        "接口用途",
+        "实时",
+        "备注",
+        "入参格式",
+        "入参示例",
+        "返回值格式",
+        "返回值示例",
+        "错误处理格式",
+        "错误处理",
+        "接口样例",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "接口映射表": [
+        "映射ID",
+        "第三方接口ID",
+        "对应Miuis接口ID",
+        "交互方向",
+        "交互层级",
+        "交互说明",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "字段映射表": [
+        "字段ID",
+        "接口映射ID",
+        "miuis接口字段",
+        "第三方接口字段",
+        "备注"
+      ]
+    }
+  },
+  "miuisApis": [
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-01",
+      "apiName": "通过时间获取申请单",
+      "direction": "Forward",
+      "interactionMode": "HTTP JSON",
+      "endpoint": "http://ip:port/channelService/Apply/HIS/getHISOrderByTime",
+      "targetSystem": "第三方",
+      "purpose": "按开单时间范围获取申请单",
+      "realtime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "errorFormat": "json",
+      "notes": "- 触发时机：登记员在登记界面设置查询条件并点击查询，且未填写查询号码\n- 前置条件：\n  - 第三方系统支持按时间查询申请单，或已将申请单数据预先写入中间表/视图\n  - 申请单存在开单时间字段",
+      "match": {
+        "otherApiId": "1",
+        "otherApiName": "检查申请单查询接口",
+        "coverage": "supports",
+        "confidence": "high",
+        "matchType": "semantic-field-adapter",
+        "reason": "第三方接口 1 为检查申请单查询接口，请求示例包含申请单有效期间 effectiveTime/low 与 high，可覆盖 MiUIS 按开单时间范围获取申请单。",
+        "requiredAdapter": "将 MiUIS JSON condition.startDt/endDt、机构/科室/患者条件转换为 HL7 V3 XML 查询参数，并将返回 XML 申请单明细转换为 MiUIS JSON data 数组。",
+        "explicitMappings": [],
+        "fieldMappings": []
+      }
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-02",
+      "apiName": "通过号码获取申请单",
+      "direction": "Forward",
+      "interactionMode": "HTTP JSON",
+      "endpoint": "http://ip:port/channelService/Apply/HIS/getHISOrderById`",
+      "targetSystem": "第三方",
+      "purpose": "按号码获取申请单",
+      "realtime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "errorFormat": "json",
+      "notes": "- 触发时机：登记员已获取电子单号码，例如扫描条码\n- 前置条件：第三方支持按号码查询",
+      "match": {
+        "otherApiId": "1",
+        "otherApiName": "检查申请单查询接口",
+        "coverage": "supports",
+        "confidence": "high",
+        "matchType": "explicit-mapping",
+        "reason": "接口映射表已明确将第三方接口 1 映射到 IF-APPLY-02；字段映射表包含 medicalId、startDt、endDt、UserID 等关键字段映射。",
+        "requiredAdapter": "沿用现有字段映射，将 medicalId 映射到 actId 中的申请单编号 root，并处理 HL7 XML 与 MiUIS JSON 的双向转换。",
+        "explicitMappings": [
+          {
+            "mappingId": "1",
+            "otherApiId": "1",
+            "description": "miuis通过接口平台从his接口查询检查申请单",
+            "direction": "Forward"
+          }
+        ],
+        "fieldMappings": [
+          {
+            "miuisField": "medicalId",
+            "otherField": "actId->root=\"2.16.156.10011.1.24\"",
+            "note": "申请单编号"
+          },
+          {
+            "miuisField": "startDt",
+            "otherField": "effectiveTime->low",
+            "note": "开始时间"
+          },
+          {
+            "miuisField": "endDt",
+            "otherField": "effectiveTime->high",
+            "note": "结束时间"
+          },
+          {
+            "miuisField": "UserID",
+            "otherField": "patientId->root=\"2.16.156.10011.2.5.1.4\"",
+            "note": "病人ID"
+          }
+        ]
+      }
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-03",
+      "apiName": "通过号码与号码类型获取申请单",
+      "direction": "Forward",
+      "interactionMode": "HTTP JSON",
+      "endpoint": "http://ip:port/channelService/Apply/HIS/getHISOrderByIdAndType`",
+      "targetSystem": "第三方",
+      "purpose": "按号码与号码类型联合查询申请单",
+      "realtime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "errorFormat": "json",
+      "notes": "触发时机：登记员明确知道号码类型，且不同号码类型可能存在重复",
+      "match": {
+        "otherApiId": "1",
+        "otherApiName": "检查申请单查询接口",
+        "coverage": "partially_supports",
+        "confidence": "medium",
+        "matchType": "semantic-partial-adapter",
+        "reason": "第三方接口 1 的查询条件可按申请单编号、住院号、门诊号、患者 ID、身份证号、就诊卡号等不同标识查询，可承载号码查询；但 MiUIS 的 medicalIdType 需要映射为 HL7 root/标识类型。",
+        "requiredAdapter": "补充 medicalIdType 到 HL7 标识 root 的码表映射，并明确不同号码类型冲突时的优先级。",
+        "explicitMappings": [],
+        "fieldMappings": []
+      }
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-07",
+      "apiName": "查看电子单接口",
+      "direction": "Forward",
+      "interactionMode": "HTTP JSON",
+      "endpoint": "http://ip:port/channelService/Apply/HIS/getHISOrderByHISID",
+      "targetSystem": "第三方",
+      "purpose": "根据申请单号查看第三方电子单",
+      "realtime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "errorFormat": "json",
+      "notes": "触发时机：医生进入报告书写界面或检查列表点击“查看电子单”",
+      "match": {
+        "otherApiId": "1",
+        "otherApiName": "检查申请单查询接口",
+        "coverage": "supports_with_constraints",
+        "confidence": "medium",
+        "matchType": "semantic-adapter",
+        "reason": "MiUIS 查看电子单按 hisId/申请单号获取申请单详情；第三方接口 1 返回检查申请单详情且支持申请单编号查询，可作为电子单详情来源。",
+        "requiredAdapter": "将 hisId 映射到第三方申请单编号 actId，并筛选/整理返回内容为 MiUIS 电子单展示所需字段。",
+        "explicitMappings": [],
+        "fieldMappings": []
+      }
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-08",
+      "apiName": "获取第三方系统访问信息接口",
+      "direction": "Forward",
+      "interactionMode": "HTTP JSON",
+      "endpoint": "http://ip:port/channelService/Apply/third/loadExternalSystem/{instanceId}",
+      "targetSystem": "第三方",
+      "purpose": "获取第三方页面地址或报告二维码参数",
+      "realtime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "errorFormat": "json",
+      "notes": "- 触发时机：前端生成报告二维码或访问第三方页面\n- 前置条件：已配置对应按钮及 `instanceId`",
+      "match": null
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-APPLY-09",
+      "apiName": "报告状态变更接口",
+      "direction": "Forward",
+      "interactionMode": "HTTP JSON",
+      "endpoint": "http://ip:port/channelService/Apply/HIS/orderStatusChangeByReport/{reportStatus}",
+      "targetSystem": "第三方",
+      "purpose": "将报告书写、审核、打印状态同步到第三方系统",
+      "realtime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "errorFormat": "json",
+      "notes": "- 触发时机：用户保存报告、审核报告、打印报告\n- 前置条件：存在报告主键 `reportSeq`",
+      "match": {
+        "otherApiId": "2",
+        "otherApiName": "检查状态更新服务",
+        "coverage": "supports",
+        "confidence": "high",
+        "matchType": "semantic-field-adapter",
+        "reason": "第三方接口 2 为检查状态更新服务，用于更新检查单状态；MiUIS IF-APPLY-09 为报告状态变更同步，二者业务方向和状态同步语义一致。",
+        "requiredAdapter": "将 reportStatus/orderStatus/reportSeq/operator 信息转换为 HL7 XML 中的检查状态、申请单号/报告号、操作人和操作时间。",
+        "explicitMappings": [],
+        "fieldMappings": []
+      }
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-EN-01",
+      "apiName": "危急值发送接口",
+      "direction": "Forward",
+      "interactionMode": "HTTP JSON",
+      "endpoint": "http://ip:port/channelService/Apply/HIS/sendENMessage",
+      "targetSystem": "第三方",
+      "purpose": "向第三方系统发送危急值消息",
+      "realtime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "errorFormat": "json",
+      "notes": "触发时机：危急值产生并需外发时；前置条件：存在危急值推送主键",
+      "match": null
+    },
+    {
+      "hospitalName": "MiUIS",
+      "apiId": "IF-EN-02",
+      "apiName": "危急值反馈接收接口",
+      "direction": "backward",
+      "interactionMode": "HTTP JSON",
+      "endpoint": "接口平台接收：http://ip:port/channelService/Apply/PACS/enReceive；Miuis接收：http://ip:port/mindray-pacs/bridge/enBridge/enReceive",
+      "targetSystem": "Miuis系统",
+      "purpose": "接收第三方危急值反馈并回写Miuis",
+      "realtime": true,
+      "requestFormat": "json",
+      "responseFormat": "json",
+      "errorFormat": "json",
+      "notes": "触发时机：第三方处理危急值后反馈；前置条件：危急值通知已存在",
+      "match": {
+        "otherApiId": "6",
+        "otherApiName": "3.4.2 危急值反馈服务",
+        "coverage": "supports",
+        "confidence": "high",
+        "matchType": "semantic-adapter",
+        "reason": "第三方接口 6 为危急值反馈服务，返回/传输处理人、处理时间、处理意见、报告单号和申请单号，可对接 MiUIS 危急值反馈接收接口。",
+        "requiredAdapter": "确认接口 6 的实际调用方向和 URL/WSDL，将 XML 反馈字段转换为 MiUIS enReceive JSON 入参。",
+        "explicitMappings": [],
+        "fieldMappings": []
+      }
+    }
+  ],
+  "matchedOtherApis": [
+    {
+      "otherApi": {
+        "hospitalName": "内蒙古医科大学附属医院",
+        "apiId": "1",
+        "apiName": "检查申请单查询接口",
+        "direction": "Forward",
+        "interactionMode": "HTTP JSON",
+        "endpoint": "未提供（需要url或者wsdl文件请求）",
+        "targetSystem": "第三方",
+        "purpose": "如果pacs那边发现有漏申请单的可以通过这个接口来查询",
+        "realtime": true,
+        "requestFormat": "xml",
+        "responseFormat": "xml",
+        "errorFormat": "xml",
+        "notes": "如果pacs那边发现有漏申请单的可以通过这个接口来查询，按需要来，因为v3的消息庞大，建议只查单个申请单信息。"
+      },
+      "matchedMiuisApis": [
+        {
+          "miuisApiId": "IF-APPLY-01",
+          "miuisApiName": "通过时间获取申请单",
+          "coverage": "supports",
+          "confidence": "high",
+          "matchType": "semantic-field-adapter",
+          "reason": "第三方接口 1 为检查申请单查询接口，请求示例包含申请单有效期间 effectiveTime/low 与 high，可覆盖 MiUIS 按开单时间范围获取申请单。",
+          "requiredAdapter": "将 MiUIS JSON condition.startDt/endDt、机构/科室/患者条件转换为 HL7 V3 XML 查询参数，并将返回 XML 申请单明细转换为 MiUIS JSON data 数组。",
+          "explicitMappings": [],
+          "fieldMappings": []
+        },
+        {
+          "miuisApiId": "IF-APPLY-02",
+          "miuisApiName": "通过号码获取申请单",
+          "coverage": "supports",
+          "confidence": "high",
+          "matchType": "explicit-mapping",
+          "reason": "接口映射表已明确将第三方接口 1 映射到 IF-APPLY-02；字段映射表包含 medicalId、startDt、endDt、UserID 等关键字段映射。",
+          "requiredAdapter": "沿用现有字段映射，将 medicalId 映射到 actId 中的申请单编号 root，并处理 HL7 XML 与 MiUIS JSON 的双向转换。",
+          "explicitMappings": [
+            {
+              "mappingId": "1",
+              "otherApiId": "1",
+              "description": "miuis通过接口平台从his接口查询检查申请单",
+              "direction": "Forward"
+            }
+          ],
+          "fieldMappings": [
+            {
+              "miuisField": "medicalId",
+              "otherField": "actId->root=\"2.16.156.10011.1.24\"",
+              "note": "申请单编号"
+            },
+            {
+              "miuisField": "startDt",
+              "otherField": "effectiveTime->low",
+              "note": "开始时间"
+            },
+            {
+              "miuisField": "endDt",
+              "otherField": "effectiveTime->high",
+              "note": "结束时间"
+            },
+            {
+              "miuisField": "UserID",
+              "otherField": "patientId->root=\"2.16.156.10011.2.5.1.4\"",
+              "note": "病人ID"
+            }
+          ]
+        },
+        {
+          "miuisApiId": "IF-APPLY-03",
+          "miuisApiName": "通过号码与号码类型获取申请单",
+          "coverage": "partially_supports",
+          "confidence": "medium",
+          "matchType": "semantic-partial-adapter",
+          "reason": "第三方接口 1 的查询条件可按申请单编号、住院号、门诊号、患者 ID、身份证号、就诊卡号等不同标识查询，可承载号码查询；但 MiUIS 的 medicalIdType 需要映射为 HL7 root/标识类型。",
+          "requiredAdapter": "补充 medicalIdType 到 HL7 标识 root 的码表映射，并明确不同号码类型冲突时的优先级。",
+          "explicitMappings": [],
+          "fieldMappings": []
+        },
+        {
+          "miuisApiId": "IF-APPLY-07",
+          "miuisApiName": "查看电子单接口",
+          "coverage": "supports_with_constraints",
+          "confidence": "medium",
+          "matchType": "semantic-adapter",
+          "reason": "MiUIS 查看电子单按 hisId/申请单号获取申请单详情；第三方接口 1 返回检查申请单详情且支持申请单编号查询，可作为电子单详情来源。",
+          "requiredAdapter": "将 hisId 映射到第三方申请单编号 actId，并筛选/整理返回内容为 MiUIS 电子单展示所需字段。",
+          "explicitMappings": [],
+          "fieldMappings": []
+        }
+      ],
+      "notes": {
+        "formatGap": "MiUIS 样例多为 JSON，第三方接口样例多为 HL7/XML；需要接口平台完成结构转换。",
+        "endpointGap": "第三方接口请求地址多标注为未提供，需要实施阶段补齐 URL 或 WSDL。"
+      }
+    },
+    {
+      "otherApi": {
+        "hospitalName": "内蒙古医科大学附属医院",
+        "apiId": "2",
+        "apiName": "检查状态更新服务",
+        "direction": "Forward",
+        "interactionMode": "HTTP JSON",
+        "endpoint": "未提供（需要url或者wsdl文件请求）",
+        "targetSystem": "第三方",
+        "purpose": "用于更新检查状态",
+        "realtime": true,
+        "requestFormat": "xml",
+        "responseFormat": "xml",
+        "errorFormat": "xml",
+        "notes": "用于更新检查单的状态信息"
+      },
+      "matchedMiuisApis": [
+        {
+          "miuisApiId": "IF-APPLY-09",
+          "miuisApiName": "报告状态变更接口",
+          "coverage": "supports",
+          "confidence": "high",
+          "matchType": "semantic-field-adapter",
+          "reason": "第三方接口 2 为检查状态更新服务，用于更新检查单状态；MiUIS IF-APPLY-09 为报告状态变更同步，二者业务方向和状态同步语义一致。",
+          "requiredAdapter": "将 reportStatus/orderStatus/reportSeq/operator 信息转换为 HL7 XML 中的检查状态、申请单号/报告号、操作人和操作时间。",
+          "explicitMappings": [],
+          "fieldMappings": []
+        }
+      ],
+      "notes": {
+        "formatGap": "MiUIS 样例多为 JSON，第三方接口样例多为 HL7/XML；需要接口平台完成结构转换。",
+        "endpointGap": "第三方接口请求地址多标注为未提供，需要实施阶段补齐 URL 或 WSDL。"
+      }
+    },
+    {
+      "otherApi": {
+        "hospitalName": "内蒙古医科大学附属医院",
+        "apiId": "6",
+        "apiName": "3.4.2 危急值反馈服务",
+        "direction": "",
+        "interactionMode": "HTTP xml",
+        "endpoint": "未提供（需要url或者wsdl文件请求）",
+        "targetSystem": "MiUIS",
+        "purpose": "接收到危急值后向外部反馈",
+        "realtime": true,
+        "requestFormat": "xml",
+        "responseFormat": "xml",
+        "errorFormat": "xml",
+        "notes": "subjectClass内容限制为如下：020201 超声检查\n    020202 放射检查\n    020203 核医学检查\n    020204 内窥镜检查\n    020205 病理检查\n    020206 心电检查\n    020207 脑电图检查\n    020208 肌电图检查\n    020209 胃肠动力检查\n    020210 肺功能检查\n    020211 睡眠呼吸监测\n    020212 常规病理检查\n    020213 快速病理检查\n    020214 液基细胞检查\n    020215 细胞学检查\n    020216 病理会诊检查\n    020299 其他检查记录"
+      },
+      "matchedMiuisApis": [
+        {
+          "miuisApiId": "IF-EN-02",
+          "miuisApiName": "危急值反馈接收接口",
+          "coverage": "supports",
+          "confidence": "high",
+          "matchType": "semantic-adapter",
+          "reason": "第三方接口 6 为危急值反馈服务，返回/传输处理人、处理时间、处理意见、报告单号和申请单号，可对接 MiUIS 危急值反馈接收接口。",
+          "requiredAdapter": "确认接口 6 的实际调用方向和 URL/WSDL，将 XML 反馈字段转换为 MiUIS enReceive JSON 入参。",
+          "explicitMappings": [],
+          "fieldMappings": []
+        }
+      ],
+      "notes": {
+        "formatGap": "MiUIS 样例多为 JSON，第三方接口样例多为 HL7/XML；需要接口平台完成结构转换。",
+        "endpointGap": "第三方接口请求地址多标注为未提供，需要实施阶段补齐 URL 或 WSDL。"
+      }
+    }
+  ],
+  "unmatchedMiuisApis": [
+    {
+      "apiId": "IF-APPLY-08",
+      "apiName": "获取第三方系统访问信息接口",
+      "direction": "Forward",
+      "purpose": "获取第三方页面地址或报告二维码参数",
+      "reason": "other_api 中未发现可返回第三方页面地址、报告二维码参数或外部系统访问信息的接口；接口 5 仅为登录令牌验证，不能替代页面/二维码 URL 获取能力。"
+    },
+    {
+      "apiId": "IF-EN-01",
+      "apiName": "危急值发送接口",
+      "direction": "Forward",
+      "purpose": "向第三方系统发送危急值消息",
+      "reason": "other_api 中未发现 MiUIS 向第三方发送危急值消息的接收接口；第三方接口 6 是危急值反馈，不覆盖危急值产生后的首次发送。"
+    }
+  ],
+  "unusedOtherApis": [
+    {
+      "apiId": "3",
+      "apiName": "推送预约信息",
+      "purpose": "用于推送预约信息到MiUIS",
+      "reason": "未匹配到当前 miuis_api Sheet 中的接口需求。"
+    },
+    {
+      "apiId": "4",
+      "apiName": "发送排号信息",
+      "purpose": "发送签到信息到MiUIS",
+      "reason": "未匹配到当前 miuis_api Sheet 中的接口需求。"
+    },
+    {
+      "apiId": "5",
+      "apiName": "登陆操作",
+      "purpose": "登陆令牌验证",
+      "reason": "未匹配到当前 miuis_api Sheet 中的接口需求。"
+    }
+  ],
+  "recommendations": [
+    "将第三方接口 1 作为申请单查询统一入口，对接 IF-APPLY-01、IF-APPLY-02、IF-APPLY-03、IF-APPLY-07；优先补全 medicalIdType 与 HL7 root 的映射码表。",
+    "将第三方接口 2 用于 IF-APPLY-09 报告/检查状态同步，并现场确认 MiUIS 报告状态与 HIS 检查状态编码映射。",
+    "将第三方接口 6 用于 IF-EN-02 危急值反馈接收，需确认实际调用方向、URL/WSDL 和字段必填规则。",
+    "新增或补充第三方接口以覆盖 IF-APPLY-08：需要能返回外部系统页面 URL、二维码参数或访问令牌的接口。",
+    "新增或确认第三方危急值接收接口以覆盖 IF-EN-01；现有接口 6 只能覆盖反馈，不覆盖首次危急值发送。",
+    "由于 MiUIS 为 JSON 而现有第三方接口主要为 HL7/XML，接口平台需实现 JSON/XML 结构转换、字段码表转换、错误码归一和超时重试策略。",
+    "other_api 多个接口请求地址为“未提供”，联调前必须补齐真实 URL 或 WSDL 文件。"
+  ]
 }
